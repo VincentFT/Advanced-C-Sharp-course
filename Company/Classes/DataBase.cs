@@ -34,7 +34,7 @@ namespace Company.Classes
         public void CreateDep()
         {
             for (int i = 0; i < depCount; i++)
-                departments.Add(new Department("Our_Department_" + i));
+                departments.Add(new Department("Наш департамент " + i));
         }
 
         /// <summary>Создаёт список сотрудников</summary>
@@ -43,9 +43,9 @@ namespace Company.Classes
             for (int i = 0; i < emlCount; i++)
             {
                 employees.Add(new Employee(
-                    "Name_" + i, "Surname_" + i, (uint)rand.Next(18, 90), 
+                    "Имя " + i, "Фамилия " + i, (uint)rand.Next(18, 90),
                     rand.Next(35000, 499999),
-                    departments[rand.Next(0, depCount)].Name)
+                    departments[rand.Next(0, depCount)].DepartmentID)
                     );
             }
         }
@@ -78,7 +78,7 @@ namespace Company.Classes
             {
                 Department cbi = ((sender as ComboBox).SelectedItem as Department);
                 
-                string result = cbi.GetEmployees(cbi.Name, employees);
+                string result = cbi.GetEmployees(employees);
 
                 return result;
             }
@@ -96,7 +96,6 @@ namespace Company.Classes
             if (!departments.Contains(newDep))
             {
                 departments.Add(newDep);
-                updateData?.Invoke();
                 return true;
             }
             else
@@ -112,7 +111,7 @@ namespace Company.Classes
         /// <param name="salary">Зарплата</param>
         /// <param name="dep">Название отдела</param>
         /// <returns></returns>
-        internal bool addEmp(string name, string surname, string age, string salary, string dep)
+        internal bool addEmp(string name, string surname, string age, string salary, uint depid)
         {
             if(name.Any(char.IsDigit) || surname.Any(char.IsDigit))
                 return false;
@@ -123,7 +122,7 @@ namespace Company.Classes
             if (!decimal.TryParse(salary, out decSal))
                 return false;
 
-            Employee newEmp = new Employee(name, surname, intAge, decSal, dep);
+            Employee newEmp = new Employee(name, surname, intAge, decSal, depid);
 
             if (!employees.Contains(newEmp))
             {
@@ -139,24 +138,20 @@ namespace Company.Classes
 
         /// <summary>Изменяет данные об отделе. Возвращает истину в случае успеха</summary>
         /// <param name="newname">Новое название</param>
-        /// <param name="oldname">Старое название</param>
+        /// <param name="depid">ID отдела</param>
         /// <returns></returns>
-        internal bool editDep(string newname, string oldname)
+        internal bool editDep(string newname, uint depid)
         {
             Department editDep = new Department(newname);
             if (!departments.Contains(editDep))
             {
                 for (int i = 0; i < departments.Count; i++)
                 {
-                    if (departments[i].Name == oldname)
+                    if (departments[i].DepartmentID == depid)
                     {
-                        departments.RemoveAt(i);
-                        departments.Insert(i, editDep);
-                        updateEmpData(newname, oldname);
+                        departments[i].Name = newname;
                     }
                 }
-
-                updateData?.Invoke();
                 return true;
             }
             else
@@ -173,20 +168,20 @@ namespace Company.Classes
         /// <param name="salary">Новая зарплата</param>
         /// <param name="dep">Новый отдел</param>
         /// <returns></returns>
-        internal bool editEmp(Employee old, string name, string surname, string age, string salary, string dep)
+        internal bool editEmp(Employee old, string name, string surname, string age, string salary, uint depid)
         {
-            if (name.Any(char.IsDigit) || surname.Any(char.IsDigit))
-                return false;
+            //if (name.Any(char.IsDigit) || surname.Any(char.IsDigit))
+            //    return false;
             uint intAge = 0;
             if (!uint.TryParse(age, out intAge))
                 return false;
             decimal decSal = 0M;
             if (!decimal.TryParse(salary, out decSal))
                 return false;
-            if (!checkDep(dep))
+            if (!checkDep(depid))
                 return false;
 
-            Employee editmp = new Employee(name, surname, intAge, decSal, dep);
+            Employee editmp = new Employee(name, surname, intAge, decSal, depid);
 
             if (!employees.Contains(editmp))
             {
@@ -208,28 +203,17 @@ namespace Company.Classes
         }
 
         /// <summary>Проверяет есть существует ли такой отдел</summary>
-        /// <param name="dep">Название отдела</param>
+        /// <param name="depid">ID отдела</param>
         /// <returns></returns>
-        private bool checkDep(string dep)
+        private bool checkDep(uint depid)
         {
             foreach (var depart in departments)
             {
-                if (depart.Name == dep)
+                if (depart.DepartmentID == depid)
                     return true;
             }
             return false;
         }
-
-        /// <summary>Изменяет данные об отделе у сотрудников</summary>
-        /// <param name="newname">Новое название отдела</param>
-        /// <param name="oldname">Сатрое название отдела</param>
-        private void updateEmpData(string newname, string oldname)
-        {
-            for (int i = 0; i < employees.Count; i++)
-            {
-                if (employees[i].Department == oldname)
-                    employees[i].Department = newname;
-            }
-        }
+                
     }
 }
