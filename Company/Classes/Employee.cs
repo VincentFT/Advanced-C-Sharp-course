@@ -1,18 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Company.Classes
 {
-    class Employee : IEquatable<Employee>
+    class Employee : IEquatable<Employee>, INotifyPropertyChanged
     {
-        public string Name { get; set; }
+        string employeeName;
+        public string Name
+        {
+            get { return this.employeeName; }
+            set
+            {
+                this.employeeName = value;
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(this.Name)));
+            }
+        }
         public string Surname { get; set; }
         public uint Age { get; set; }
         public decimal Salary { get; set; }
-        public string Department { get; set; }
+        public uint DepartmentID { get; set; }
 
         /// <summary>Инициализирует сотрудника</summary>
         /// <param name="name">Имя</param>
@@ -20,27 +31,23 @@ namespace Company.Classes
         /// <param name="age">Возраст</param>
         /// <param name="salary">Зарплата</param>
         /// <param name="department">Отдел</param>
-        public Employee(string name, string surname, uint age, decimal salary, string department)
+        public Employee(string name, string surname, uint age, decimal salary, uint depid)
         {
             Name = name;
             Surname = surname;
             Age = age;
             Salary = salary;
-            Department = department;
+            DepartmentID = depid;
         }
 
-        /// <summary>Возвращет имя и фамилию сотрудника</summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return $"{Name} {Surname}";
-        }
-
+        public event PropertyChangedEventHandler PropertyChanged;
+                
         /// <summary>Возвращает всю информацию о сотруднике</summary>
         /// <returns></returns>
         public string GetInfo()
         {
-            return $"Имя: {Name}\nФамилия: {Surname}\nВозраст: {Age}\nЗарплата: {Salary}\nОтдел: {Department}";
+            return $"Имя: {Name}\nФамилия: {Surname}\nВозраст: {Age}\nЗарплата: {Salary}\n" +
+                $"Отдел: {GetDepartmentName(MainWindow.db.GetDeptaments() as ObservableCollection<Department>)}\n";
         }
 
         /// <summary>Метод сравнения сотрудника с другим</summary>
@@ -49,7 +56,7 @@ namespace Company.Classes
         public bool Equals(Employee another)
         {
             if (this.Name == another.Name && this.Surname == another.Surname && this.Age == another.Age &&
-                this.Department == another.Department && this.Salary == another.Salary)
+                this.DepartmentID == another.DepartmentID && this.Salary == another.Salary)
             {
                 return true;
             }
@@ -57,6 +64,21 @@ namespace Company.Classes
             {
                 return false;
             }
+        }
+
+        /// <summary>Возвращает название отдела</summary>
+        /// <param name="list">Список всех отделов</param>
+        /// <returns></returns>
+        internal string GetDepartmentName(ObservableCollection<Department> list)
+        {
+            var request = from e
+                          in list
+                          where e.DepartmentID == DepartmentID
+                          select e;
+
+            string result = (request.ElementAt(0)).Name;
+
+            return result;
         }
     }
 }

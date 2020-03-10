@@ -16,9 +16,7 @@ using System.Collections.ObjectModel;
 
 namespace Company.Windows
 {
-    /// <summary>
-    /// Interaction logic for AddDepWindow.xaml
-    /// </summary>
+    
     public partial class AddDepWindow : Window
     {
 
