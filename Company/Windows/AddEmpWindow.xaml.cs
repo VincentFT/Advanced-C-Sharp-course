@@ -1,5 +1,4 @@
-﻿using Company.Classes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,9 +14,7 @@ using System.Windows.Shapes;
 
 namespace Company.Windows
 {
-    /// <summary>
-    /// Interaction logic for AddEmpWindow.xaml
-    /// </summary>
+
     public partial class AddEmpWindow : Window
     {
         public AddEmpWindow()
@@ -30,13 +27,13 @@ namespace Company.Windows
         /// <param name="e"></param>
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.db.addEmp(tboxName.Text, tboxSurname.Text, tboxAge.Text, tboxSalary.Text, tboxDepartment.Text))
-            {
-                MessageBox.Show("Сотрудник добавлен!");
-                this.Close();
-            }
-            else
-                MessageBox.Show("Такой сотрудник уже существует или введены некоректные данные!");
+            //if (MainWindow.db.addEmp(tboxName.Text, tboxSurname.Text, tboxAge.Text, tboxSalary.Text, uint.Parse(tboxDepartment.Text)))
+            //{
+            //    MessageBox.Show("Сотрудник добавлен!");
+            //    this.Close();
+            //}
+            //else
+            //    MessageBox.Show("Такой сотрудник уже существует или введены некоректные данные!");
         }
     }
 }
