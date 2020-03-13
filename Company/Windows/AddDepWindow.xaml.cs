@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using Company.Classes;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -30,13 +29,13 @@ namespace Company.Windows
         /// <param name="e"></param>
         private void BtnSaveDep_Click(object sender, RoutedEventArgs e)
         {
-            if (MainWindow.db.addDep(tboxNewDep.Text))
-            {
-                MessageBox.Show("Отдел добавлен!");
-                this.Close();
-            }
-            else
-                MessageBox.Show("Такой отдел уже существует!");
+            //if (MainWindow.db.addDep(tboxNewDep.Text))
+            //{
+            //    MessageBox.Show("Отдел добавлен!");
+            //    this.Close();
+            //}
+            //else
+            //    MessageBox.Show("Такой отдел уже существует!");
         }
     }
 }
