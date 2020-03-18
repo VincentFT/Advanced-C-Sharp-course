@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Company
 {
@@ -45,8 +47,14 @@ namespace Company
         {
             InitializeComponent();
             db = new DataBase();
-            empList.ItemsSource = db.GetEmployees();
-            cbDepList.ItemsSource = db.GetDeptaments();
+
+           //db.GetValues();
+
+           // empList.ItemsSource = db.GetEmployees();
+           // cbDepList.ItemsSource = db.GetDeptaments();
+
+
+
             this.DataContext = db;
         }
 
@@ -79,14 +87,19 @@ namespace Company
         /// <param name="args">Параметры</param>
         private void BtnEditEmp_Click(object sender, RoutedEventArgs e)
         {
-            if (empList.SelectedItem != null)
-            {
-                EmpEditWindow empEditWindow = new EmpEditWindow(empList.SelectedItem as Employee);
-                empEditWindow.Owner = this;
-                empEditWindow.Show();
-            }
-            else
-                MessageBox.Show("Выберете сотрудника для редактирования!");
+            db.GetValues();
+
+             empList.ItemsSource = db.GetEmployees();
+             cbDepList.ItemsSource = db.GetDeptaments();
+
+            //if (empList.SelectedItem != null)
+            //{
+            //    EmpEditWindow empEditWindow = new EmpEditWindow(empList.SelectedItem as Employee);
+            //    empEditWindow.Owner = this;
+            //    empEditWindow.Show();
+            //}
+            //else
+            //    MessageBox.Show("Выберете сотрудника для редактирования!");
         }
 
         /// <summary>Обработка нажатия кнопки "добавить сотрудника"</summary>

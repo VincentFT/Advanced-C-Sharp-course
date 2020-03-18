@@ -23,7 +23,20 @@ namespace Company.Classes
         public string Surname { get; set; }
         public uint Age { get; set; }
         public decimal Salary { get; set; }
-        public uint DepartmentID { get; set; }
+
+        uint departmentId;
+        public uint DepartmentID
+        {
+            get
+            {
+                return departmentId;
+
+            }
+            set
+            {
+                departmentId = value - 1;
+            }
+        }
 
         /// <summary>Инициализирует сотрудника</summary>
         /// <param name="name">Имя</param>

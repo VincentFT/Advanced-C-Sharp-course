@@ -76,7 +76,7 @@
                    Margin="24,28,25,18" TextWrapping="Wrap"/>
 
         <Button x:Name="btnEditEmp" 
-                Content="Редактировать сотрудника" 
+                Content="Подключиться к сервису" 
                 Grid.Column="1" 
                 HorizontalAlignment="Left" 
                 Margin="63,80,0,0" 
@@ -85,7 +85,7 @@
                 Width="auto"
                 Padding="3" Click="BtnEditEmp_Click"/>
 
-        <Button x:Name="btnCreateEmp" 
+        <!--<Button x:Name="btnCreateEmp" 
                 Content="Добавить сотрудника" 
                 Grid.Column="1" 
                 HorizontalAlignment="Left" 
@@ -111,7 +111,7 @@
                 Grid.Row="3" 
                 VerticalAlignment="Top" 
                 Width="163"
-                Padding="3" Click="BtnCreateDep_Click"/>
+                Padding="3" Click="BtnCreateDep_Click"/>-->
         <Image Grid.Column="1" Height="130" Margin="402,15,0,0" Grid.Row="3" Width="131" HorizontalAlignment="Left" VerticalAlignment="Top" Source="3c.png">
             <Image.OpacityMask>
                 <ImageBrush ImageSource="3c.png">
