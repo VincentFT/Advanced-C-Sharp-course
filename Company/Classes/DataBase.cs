@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace Company.Classes
 {
@@ -17,6 +19,8 @@ namespace Company.Classes
 
         public event Action updateData;
 
+        private const string APP_PATH = "http://localhost:51849";
+
         public int emlCount { get; set; } = 20;
 
         public int depCount { get; set; } = 5;
@@ -26,11 +30,38 @@ namespace Company.Classes
         /// <summary>Конструктор данных</summary>
         public DataBase()
         {
-            CreateDep();
-            CreateEmpl();
+            //CreateDep();
+            //CreateEmpl();
+            //GetValues();
+            
         }
 
-       /// <summary>Создаёт список департаметов</summary>
+        public void GetValues()
+        {
+            using (var client = new HttpClient())
+            {
+                try
+                {
+                    var response = client.GetAsync(APP_PATH + "/api/Departments").Result;
+                    string json = response.Content.ReadAsStringAsync().Result;
+                    List<Department> dpts = JsonConvert.DeserializeObject<List<Department>>(json);
+                 
+                    departments = new ObservableCollection<Department>(dpts);
+
+                    response = client.GetAsync(APP_PATH + "/api/Employees").Result;
+                    json = response.Content.ReadAsStringAsync().Result;
+                    List<Employee> empls = JsonConvert.DeserializeObject<List<Employee>>(json);
+                    
+                    employees = new ObservableCollection<Employee>(empls);
+                }
+                catch
+                {
+                    System.Windows.MessageBox.Show("Нет подключения к сервису!");
+                }
+            }
+        }
+
+        /// <summary>Создаёт список департаметов</summary>
         public void CreateDep()
         {
             for (int i = 0; i < depCount; i++)
